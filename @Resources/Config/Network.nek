@@ -1,0 +1,184 @@
+[Variables]
+@includeBT=#@#bluetooth\bluetoothVariables.inc
+BTStatus=0
+BT_OnBluetoothCheck_On=[!Setvariable BTStatus 1][!ShowMeter BT_Toggle_Icon_on][!HideMeter BT_Toggle_Icon_off][!UpdateMeter BTStatus][!UpdateMeter *][!Redraw]
+BT_OnBluetoothCheck_Off=[!Setvariable BTStatus 0][!ShowMeter BT_Toggle_Icon_off][!HideMeter BT_Toggle_Icon_on][!UpdateMeter BTStatus][!UpdateMeter *][!Redraw]
+BT_AfterBluetoothToggle=#BT_CheckBluetooth#[!Redraw]
+@includeBTM=#@#bluetooth\bluetooth.inc
+
+;============================================================================================================================;
+;                                                     Function                                                               ;
+;============================================================================================================================;
+
+[InternetStatus]
+Measure=PLUGIN
+Plugin=SysInfo
+SysInfoType=INTERNET_CONNECTIVITY
+RegExpSubstitute=1
+Substitute="^1$":"Connected","^-1$":"Not connected"
+IfCondition=InternetStatus = -1
+IfTrueAction=[!ShowMeter Toggle_Icon_off][!UpdateMeter *][!Redraw]
+IfFalseAction=[!ShowMeter Toggle_Icon_on][!UpdateMeter *][!Redraw]
+OnChangeAction=[!UpdateMeter Toggle_Icon][!Redraw]
+UpdateDivider=1
+
+[InternetOff]
+Measure=Plugin
+Plugin=RunCommand
+Parameter=ipconfig /release
+State=Hide
+[InternetOn]
+Measure=Plugin
+Plugin=RunCommand
+Parameter=ipconfig /renew
+State=Hide
+
+
+
+;============================================================================================================================;
+;                                                    MeterStyles                                                             ;
+;============================================================================================================================;
+
+
+
+[Network_String]
+Meter=String
+Text=Network and Connection
+MeterStyle=Icon_SideBox
+X=(480*#Scale#)
+Y=(550*#Scale#)
+FontFace=#FontFace#
+FontColor=#FontColor#
+FontWeight=900
+FontSize=(12*#Scale#)
+AntiAlias=1
+
+
+[Wifi_Icon]
+Meter=String
+Text=[\xf1eb]
+MeterStyle=Icon_SideBox
+X=(410*#Scale#)
+Y=(40*#Scale#)r
+FontFace=Font Awesome 6 Pro
+FontColor=#FontColor#
+FontWeight=900
+FontSize=(18*#Scale#)
+AntiAlias=1
+
+[Wifi_Text]
+Meter=String
+Text=Internet
+X=(35*#Scale#)r
+Y=(-8*#Scale#)r
+FontSize=(12*#Scale#)
+FontColor=#FontColor#
+FontWeight=500
+DynamicVariables=1
+FontFace=#FontFace#
+AntiAlias=1
+
+[Toggle_Icon_on]
+Meter=String
+Text=[\xf205]
+X=(240*#Scale#)r
+Y=(-2*#Scale#)r
+FontFace=Font Awesome 6 Pro
+FontColor=#AccentColor#
+FontWeight=900
+FontSize=(22*#Scale#)
+AntiAlias=1
+LeftMouseUpAction=[!HideMeter #CurrentSection#][!CommandMeasure Internetoff "Run"][!ShowMeter Toggle_Icon_off][!UpdateMeter *][!Redraw]
+Hidden=1
+
+[Toggle_Icon_off]
+Meter=String
+Text=[\xf204]
+X=r
+Y=r
+FontFace=Font Awesome 6 Pro
+FontColor=#FontColor#
+FontWeight=900
+FontSize=(22*#Scale#)
+AntiAlias=1
+LeftMouseUpAction=[!HideMeter #CurrentSection#][!CommandMeasure Interneton "Run"][!ShowMeter Toggle_Icon_on][!UpdateMeter *][!Redraw]
+Hidden=1
+
+
+[Bluetooth_Icon]
+Meter=String
+Text=[\xf293]
+MeterStyle=Icon_SideBox
+X=(410*#Scale#)
+Y=(70*#Scale#)r
+FontFace=Font Awesome 6 Pro
+FontColor=#FontColor#
+FontWeight=900
+FontSize=(18*#Scale#)
+AntiAlias=1
+
+[Bluetooth_Text]
+Meter=String
+Text=Bluetooth
+X=(35*#Scale#)r
+Y=(-8*#Scale#)r
+FontSize=(12*#Scale#)
+FontColor=#FontColor#
+FontWeight=500
+DynamicVariables=1
+FontFace=#FontFace#
+AntiAlias=1
+
+
+[BT_Toggle_Icon_on]
+Meter=String
+Text=[\xf205]
+X=(240*#Scale#)r
+Y=(-2*#Scale#)r
+FontFace=Font Awesome 6 Pro
+FontColor=#AccentColor#
+FontWeight=900
+FontSize=(22*#Scale#)
+AntiAlias=1
+LeftMouseUpAction=#BT_ToggleBluetooth#
+
+
+[BT_Toggle_Icon_off]
+Meter=String
+Text=[\xf204]
+X=r
+Y=r
+FontFace=Font Awesome 6 Pro
+FontColor=#FontColor#
+FontWeight=900
+FontSize=(22*#Scale#)
+AntiAlias=1
+LeftMouseUpAction=#BT_ToggleBluetooth#
+Hidden=(1-#BTStatus#)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

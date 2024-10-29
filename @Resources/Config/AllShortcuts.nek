@@ -1,0 +1,110 @@
+[Variables]
+HoverW:B=50
+HoverH:B=50
+HoverIndex:B=Shortcut.XYZ
+ImageWidth=40
+ImageHeight=40
+Scroll=1
+ScrollClickedPos=0
+All_Apps.W=280
+All_Apps.H=520
+;============================================================================================================================;
+;                                                     Function                                                               ;
+;============================================================================================================================;
+
+[AnchorChecker]
+Measure=Calc
+Formula=(Clamp([All_Apps_Container:H]-[Anchor:Y], -5000, 0))
+IfCondition=AnchorChecker=0
+IfTrueAction=[!DisableMouseAction All_Apps_Container "MouseScrollUpAction|MouseScrollDownAction"][!UpdateMeterGroup Background][!Redraw]
+IfFalseAction=[!ShowMeter ScrollBar][!UpdateMeterGroup Background][!Redraw]
+IfConditionMode=1
+Group=AnchorChecker
+DynamicVariables=1
+
+[MouseScrollBar]
+Measure=Plugin
+Plugin=Mouse
+MouseMoveAction=[!SetVariable Scroll "(Clamp(($MouseY$-#ScrollClickedPos#-40*#Scale#)/(#Skin.H#/2-40*#Scale#)*[AnchorChecker],[AnchorChecker],0))"][!UpdateMeter *][!Redraw]
+LeftMouseUpAction=[!SetOption ScrollBar MeterStyle ScrollBar:Idle][!SetOption ScrollBar Fill "Stroke Color #FontColor#,100"][!CommandMeasure MouseScrollBar "Stop"][!DisableMeasure MouseScrollBar][!UpdateMeter ScrollBar][!Redraw]
+RequireDragging=1
+RelativeToSkin=1
+DynamicVariables=1
+Disabled=1
+
+;============================================================================================================================;
+;                                                    MeterStyles                                                             ;
+;============================================================================================================================;
+
+[All_Apps_BackGround]
+X=(10*#Scale#)
+Y=(20*#Scale#)r
+Shape=Rectangle 0,0,(#All_Apps.W#*#Scale#-40*#Scale#),(40*#Scale#),8 | StrokeWidth 0  | Extend This
+This=FillColor #BackGround_Color#,0
+DynamicVariables=1
+MouseOverAction=[!SetOption #CURRENTSECTION# This "FillColor #BackGround_Color#,30"][!UpdateMeter *][!Redraw]
+MouseLeaveAction=[!SetOption #CURRENTSECTION# This "FillColor #BackGround_Color#,0"][!UpdateMeter *][!Redraw]
+Container=All_Apps_Container
+
+[All_Apps_Icons]
+W=(32*#Scale#)
+H=(32*#Scale#)
+X=(5*#Scale#)r
+Y=(4*#Scale#)r
+DynamicVariables=1
+Container=All_Apps_Container
+
+[All_Apps_Text]
+X=(45*#Scale#)r
+Y=(17*#Scale#)r
+W=(190*#Scale#)
+FontFace=#FontFace#
+FontColor=#FontColor#
+FontWeight=400
+FontSize=(10*#Scale#)
+StringAlign=LeftCenter
+ClipString=1
+AntiAlias=1
+Container=All_Apps_Container
+
+;============================================================================================================================;
+;                                                     Content                                                                ;
+;============================================================================================================================;
+
+[All_Apps_Container]
+Meter=Shape 
+X=(70*#Scale#)
+Y=(100*#Scale#)
+Shape=Rectangle 0,0,(#All_Apps.W#*#Scale#),(#All_Apps.H#*#Scale#),8 | StrokeWidth 0  
+DynamicVariables=1
+Group=Background | Scrollbar
+MouseCursorAction=0
+MouseScrollDownAction=[!SetVariable Scroll "(Clamp(#Scroll#-50,[AnchorChecker],0))"][!UpdateMeter *][!Redraw]
+MouseScrollUpAction=[!SetVariable Scroll "(Clamp(#Scroll#+50,[AnchorChecker],0))"][!UpdateMeter *][!Redraw]
+
+
+[ScrollBar:Scrolling]
+Fill=Stroke Color #FontColor#
+[ScrollBar:Idle]
+LeftMouseDownAction=[!SetVariable ScrollClickedPos "$MouseY$"][!SetOption ScrollBar MeterStyle ScrollBar:Scrolling][!EnableMeasure MouseScrollBar][!UpdateMeasure MouseScrollBar][!CommandMeasure MouseScrollBar "Start"]
+MouseOverAction=[!SetOption #CURRENTSECTION# Fill "Stroke Color #FontColor#,100"][!UpdateMeter #CURRENTSECTION#][!Redraw]
+MouseLeaveAction=[!SetOption #CURRENTSECTION# Fill "Stroke Color #FontColor#"][!UpdateMeter #CURRENTSECTION#][!Redraw]
+[ScrollBar]
+Meter=Shape
+X=([All_Apps_Container:XW]-5*#Scale#)
+Y=(80*#Scale#+(#Scroll#/([AnchorChecker]+1)*([All_Apps_Container:H]-([All_Apps_Container:H]/([All_Apps_Container:H]-[AnchorChecker])*[All_Apps_Container:H]))))
+Shape=Line 0,0,0,([All_Apps_Container:H]/([All_Apps_Container:H]-[AnchorChecker])*[All_Apps_Container:H]) | StrokeWidth (4*#Scale#) | StrokeStartCap Round | StrokeEndCap Round | Extend Fill
+Fill=Stroke Color #FontColor#
+DynamicVariables=1
+Group=Background | Scrollbar
+Hidden=1
+MeterStyle=ScrolLBar:Idle
+
+
+@includeall_apps=#@#AllApps\All Apps.nek
+
+[Anchor]
+Meter=String
+Container=All_Apps_Container
+x=r
+Y=R

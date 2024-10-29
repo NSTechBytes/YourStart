@@ -1,0 +1,92 @@
+;============================================================================================================================;
+;                                                     Function                                                               ;
+;============================================================================================================================;
+[MeasureVolume]
+Measure=Plugin
+Plugin=Win7AudioPlugin
+IfCondition=MeasureVolume = -1
+IfTrueAction=[!SetOption Volume_Icon Text "[\xf6a9]"]
+IfCondition2=(MeasureVolume = 0)
+IfTrueAction2=[!SetOption Volume_Icon Text "[\xf026]"]
+IfCondition3=(MeasureVolume > 0) && (MeasureVolume <= 34)
+IfTrueAction3=[!SetOption Volume_Icon Text "[\xf027]"]
+IfCondition4=(MeasureVolume > 34) && (MeasureVolume <= 67)
+IfTrueAction4=[!SetOption Volume_Icon Text "[\xf6a8]"]
+IfCondition5=(MeasureVolume > 67)
+IfTrueAction5=[!SetOption Volume_Icon Text "[\xf028]"]
+IfConditionMode=1
+UpdateDivider=0
+
+[MeasureMouse]
+Measure=Plugin
+Plugin=Mouse
+LeftMouseDragAction=[!SetOption SliderDragCalc Formula "(Clamp((($MouseX$-(430*#Scale#))/[SliderSizeCalc]),0,100))"][!UpdateMeasure SliderDragCalc][!CommandMeasure "MeasureVolume" "SetVolume [SliderDragCalc]"][!UpdateMeter *][!Update]
+LeftMouseUpAction=[!CommandMeasure MeasureMouse "Stop"][!SetOption SliderDragCalc Formula "MeasureVolume"][!Update]
+RelativeToSkin=1
+RequireDragging=1
+DynamicVariables=1
+UpdateDivider=0
+
+[SliderDragCalc]
+Measure=Calc
+Formula=MeasureVolume
+UpdateDivider=0
+[SliderSizeCalc]
+Measure=Calc
+Formula=(2*#Scale#)
+UpdateDivider=0
+;============================================================================================================================;
+;                                                     Content                                                                ;
+;============================================================================================================================;
+
+[Volume_String]
+Meter=String
+Text=Volume Control
+MeterStyle=Icon_SideBox
+X=(450*#Scale#)
+Y=(450*#Scale#)
+FontFace=#FontFace#
+FontColor=#FontColor#
+FontWeight=900
+FontSize=(12*#Scale#)
+AntiAlias=1
+UpdateDivider=0
+
+[Volume_Icon]
+Meter=String
+Text=
+MeterStyle=Icon_SideBox
+X=(410*#Scale#)
+Y=(490*#Scale#)
+FontFace=Font Awesome 6 Pro
+FontColor=#FontColor#
+FontWeight=900
+FontSize=(18*#Scale#)
+AntiAlias=1
+UpdateDivider=0
+
+[VolumeMeter_BackGround]
+Meter=Shape
+X=(450*#Scale#)
+Y=(488*#Scale#)
+Shape=Rectangle 0,0,(200*#Scale#),3,2 | Fill Color 255,255,255,70 | StrokeWidth 0
+Shape2=Rectangle 0,0,([SliderDragCalc]*[SliderSizeCalc]),3,2 | Fill Color #AccentColor# | StrokeWidth 0
+Shape3=Rectangle 0,0,10,(15*#Scale#),4 | Fill Color #AccentColor# | StrokeWidth 0 | offset ([SliderDragCalc]*[SliderSizeCalc]),(-7*#Scale#)
+LeftMouseDownAction=[!CommandMeasure MeasureVolume "SetVolume $MouseX:%$"][!Update]
+MouseOverAction=[!CommandMeasure MeasureMouse "Start"]
+DynamicVariables=1
+UpdateDivider=0
+
+[VolumePercentage_Text]
+Meter=String
+MeasureName=MeasureVolume
+Text=[MeasureVolume:%,0]
+X=(690*#Scale#)
+Y=(477*#Scale#)
+FontSize=(15*#Scale#)
+FontColor=#FontColor#
+FontWeight=900
+DynamicVariables=1
+FontFace=#FontFace#
+AntiAlias=1
+UpdateDivider=0

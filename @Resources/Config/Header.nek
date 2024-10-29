@@ -1,0 +1,92 @@
+;============================================================================================================================;
+;                                                     Function                                                               ;
+;============================================================================================================================;
+
+[USER_SID]
+Measure=SysInfo
+SysInfoType=USER_SID
+IfMatch=^(S\-1\-5\-21\-[\S]+)$
+IfMatchAction=[!EnableMeasure Profile_Picture_Location]
+RegExpSubstitute=1
+Substitute="^0$":""
+DynamicVariables=1
+[Profile_Picture_Location]
+Measure=Registry
+RegHKey=HKEY_LOCAL_MACHINE
+RegKey=SOFTWARE\Microsoft\Windows\CurrentVersion\AccountPicture\Users\[USER_SID]
+RegValue=Image1080
+DynamicVariables=1
+Disabled=1
+IfMatch=(S\-1\-5\-21\-[\S]+)
+IfMatchAction=[!SetOption Profile_Picture MeasureName "#CURRENTSECTION#"]
+IfNotMatchAction=[!SetOption Profile_Picture MeasureName ""]
+DynamicVariables=1
+
+;============================================================================================================================;
+;                                                    MeterStyles                                                             ;
+;============================================================================================================================;
+[Header_Text]
+FontColor=#FontColor#
+FontFace=#FontFace#
+FontWeight=500
+AntiAlias=1
+FontSize=(18*#Scale#)
+X=(80*#Scale#)
+Y=(70*#Scale#)
+DynamicVariables=1
+
+;============================================================================================================================;
+;                                                    Content                                                                 ;
+;============================================================================================================================;
+
+[All_Apps_String]
+Meter=String
+Text=All Apps
+MeterStyle=Header_Text
+[Shortcuts_Apps_String]
+Meter=String
+Text=Pinned Apps
+X=(365*#Scale#)
+MeterStyle=Header_Text
+
+[Profile_Picture]
+Meter=Image
+ImageName=
+MaskImageName=#@#Images\Circle_Mask.png
+W=(40*#Scale#)
+H=(40*#Scale#)
+X=(15*#Scale#)
+Y=(14*#Scale#)
+DynamicVariables=1
+[User_Text]
+Meter=String
+Text=%USERNAME%
+X=(10*#Scale#)R
+Y=(25*#Scale#)r
+FontSize=(15*#Scale#)
+FontColor=#FontColor#
+FontWeight=900
+DynamicVariables=1
+FontFace=#FontFace#
+StringAlign=LeftCenter
+AntiAlias=1
+
+[Weather_Image]
+Meter=Image
+ImageName=#@#Images\Weather Icons\Unknown condition.png
+W=(50*#Scale#)
+H=(50*#Scale#)
+X=(700*#Scale#)
+Y=(10*#Scale#)
+[Temp_String]
+Meter=String 
+Text=
+X=(-10*#Scale#)r
+Y=(25*#Scale#)r
+FontSize=(18*#Scale#)
+Antialias=1
+FontColor=#FontColor#
+DynamicVariables=1
+FontFace=SF Pro Rounded
+FontWeight=900
+StringAlign=RightCenter

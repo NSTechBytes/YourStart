@@ -1,0 +1,224 @@
+
+
+[Variables]
+Round_Line_Size=(120*#Scale#)
+Round_Size=20
+
+[ActionList]
+Measure=Calc
+Formula=1
+
+[CPUMonitor]
+Measure=Plugin
+Plugin=UsageMonitor
+Alias=CPU
+UpdateDivider=1
+MinValue=0
+MaxValue=100
+OnChangeAction=[!UpdateMeasure CPURounded]
+[CPURounded]
+Measure=Calc
+Formula=Round(CPUMonitor,0)
+MinValue=0
+MaxValue=100
+OnChangeAction=[!CommandMeasure CPUAnimation "Stop [&ActionList]"][!CommandMeasure CPUAnimation "Execute [&ActionList]"]
+[CPUMeasure]
+Measure=Calc
+Formula=0
+MinValue=0
+MaxValue=100
+DynamicVariables=1
+[CPUAnimation]
+Measure=Plugin
+Plugin=ActionTimer
+ActionList1=Repeat AddStep, 100, 10
+ActionList2=Update
+AddStep=[!SetVariable CPUValue (1+([&CPURounded:]-1)/2)][!UpdateMeasure CPUMeasure]
+Update=[!SetVariable CPUValue [&CPURounded:]][!UpdateMeasure CPUMeasure]
+DynamicVariables=1
+
+
+[RAMMonitor]
+Measure=Plugin
+Plugin=UsageMonitor
+Category=Memory
+Counter=% Committed Bytes In Use
+UpdateDivider=1
+MinValue=0
+MaxValue=100
+OnChangeAction=[!UpdateMeasure RAMRounded]
+[RAMRounded]
+Measure=Calc
+Formula=Round(RAMMonitor,0)
+MinValue=0
+MaxValue=100
+OnChangeAction=[!CommandMeasure RAMAnimation "Stop [&ActionList]"][!CommandMeasure RAMAnimation "Execute [&ActionList]"]
+[RAMMeasure]
+Measure=Calc
+Formula=0
+MinValue=0
+MaxValue=100
+DynamicVariables=1
+[RAMAnimation]
+Measure=Plugin
+Plugin=ActionTimer
+ActionList1=Repeat AddStep, 100, 10
+ActionList2=Update
+AddStep=[!SetVariable RAMValue (0+([&RAMRounded:]-0)/2)][!UpdateMeasure RAMMeasure]
+Update=[!SetVariable RAMValue [&RAMRounded:]][!UpdateMeasure RAMMeasure]
+DynamicVariables=1
+
+
+[DiskMonitor]
+Measure=Plugin
+Plugin=UsageMonitor
+Category=LogicalDisk
+Counter=% Disk Time
+UpdateDivider=1
+MinValue=0
+MaxValue=100
+OnChangeAction=[!UpdateMeasure DiskRounded]
+[DiskRounded]
+Measure=Calc
+Formula=Round(Clamp(DiskMonitor,0,100),0)
+MinValue=0
+MaxValue=100
+OnChangeAction=[!CommandMeasure DiskAnimation "Stop [&ActionList]"][!CommandMeasure DiskAnimation "Execute [&ActionList]"]
+[DiskMeasure]
+Measure=Calc
+Formula=0
+MinValue=0
+MaxValue=100
+DynamicVariables=1
+[DiskAnimation]
+Measure=Plugin
+Plugin=ActionTimer
+ActionList1=Repeat AddStep, 100, 10
+ActionList2=Update
+AddStep=[!SetVariable DiskValue (0+([&DiskRounded:]-0)/2)][!UpdateMeasure DiskMeasure]
+Update=[!SetVariable DiskValue [&DiskRounded:]][!UpdateMeasure DiskMeasure]
+DynamicVariables=1
+
+
+[NetBytes]
+Measure=Plugin
+Plugin=UsageMonitor
+Category=Network Interface
+Counter=Bytes total/sec
+MinValue=0
+MaxValue=100
+UpdateDivider=1
+OnChangeAction=[!UpdateMeasure NetRounded]
+[NetWidth]
+Measure=Plugin
+Plugin=UsageMonitor
+Category=Network Interface
+Counter=Current bandwidth
+MinValue=0
+MaxValue=100
+UpdateDivider=3600
+OnChangeAction=[!UpdateMeasure NetRounded]
+[NetRounded]
+Measure=Calc
+Formula=Round(Clamp(NetBytes * 8 / NetWidth * 100, 0, 100),0)
+MinValue=0
+MaxValue=100
+OnChangeAction=[!CommandMeasure NetAnimation "Stop [&ActionList]"][!CommandMeasure NetAnimation "Execute [&ActionList]"]
+[NetMeasure]
+Measure=Calc
+Formula=0
+MinValue=0
+MaxValue=100
+DynamicVariables=1
+[NetAnimation]
+Measure=Plugin
+Plugin=ActionTimer
+ActionList1=Repeat AddStep, 100, 10
+ActionList2=Update
+AddStep=[!SetVariable NetValue (0+([&NetRounded:]-0)/2)][!UpdateMeasure NetMeasure]
+Update=[!SetVariable NetValue [&NetRounded:]][!UpdateMeasure NetMeasure]
+DynamicVariables=1
+;============================================================================================================================;
+;                                                     MeterStyles                                                            ;
+;============================================================================================================================;
+
+[Sys_BackGround]
+Shape=Ellipse 0,0,(#Round_Size#*#Scale#),(#Round_Size#*#Scale#) | Fill Color 00000000 | StrokeWidth 5 | Stroke Color 200,200,200,20
+X=(35*#Scale#)
+Y=(60*#Scale#)r
+DynamicVariables=1
+
+[sys_Line]
+StartAngle=(-PI/2)
+LineColor=#AccentColor#
+LineStart=(#Round_Line_Size#*0.17+2.5)
+LineLength=(#Round_Line_Size#*0.17-2.5)
+Solid=1
+AntiAlias=1
+X=r
+Y=r
+UpdateDivider=1
+DynamicVariables=1
+
+[Sys_Icon]
+X=(1*#Scale#)r
+Y=(1*#Scale#)r
+FontFace=Font Awesome 6 Pro
+FontColor=#FontColor#
+FontWeight=500
+FontSize=(18*#Scale#)
+StringAlign=CenterCenter
+AntiAlias=1
+
+;============================================================================================================================;
+;                                                     Content                                                                ;
+;============================================================================================================================;
+
+[CPU_BackGround]
+Meter=Shape
+Y=(90*#Scale#)
+MeterStyle=Sys_BackGround
+[Cpu_Line]
+Meter=Roundline
+MeasureName=CPURounded
+MeterStyle=sys_Line
+[Icon_CPU]
+Meter=String
+Text=[\xf2db]
+MeterStyle=Sys_Icon
+
+[Ram_BackGround]
+Meter=Shape
+MeterStyle=Sys_BackGround
+[Ram_Line]
+Meter=Roundline
+MeasureName=RamRounded
+MeterStyle=sys_Line
+[Icon_Ram]
+Meter=String
+Text=[\xf538]
+MeterStyle=Sys_Icon
+
+[Disk_BackGround]
+Meter=Shape
+MeterStyle=Sys_BackGround
+[Disk_Line]
+Meter=Roundline
+MeasureName=DiskRounded
+MeterStyle=sys_Line
+[Icon_Disk]
+Meter=String
+Text=[\xf0a0]
+MeterStyle=Sys_Icon
+
+[Net_BackGround]
+Meter=Shape
+MeterStyle=Sys_BackGround
+[Net_Line]
+Meter=Roundline
+MeasureName=NetRounded
+MeterStyle=sys_Line
+[Icon_Net]
+Meter=String
+Text=[\xf0ac]
+MeterStyle=Sys_Icon

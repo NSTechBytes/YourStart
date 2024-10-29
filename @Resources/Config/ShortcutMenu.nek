@@ -1,0 +1,89 @@
+[Variables]
+Shortcuts_Apps.W=400
+Shortcuts_Apps.H=300
+Scroll_2=1
+ScrollClickedPos=0
+;============================================================================================================================;
+;                                                   Function                                                                 ;
+;============================================================================================================================;
+
+[Sh_Checker]
+Measure=Calc
+Formula=(Clamp([Shortcuts_Apps_Container:H]-[Shortcut#Icons#.Image:Y], -400, 0))
+IfCondition=Sh_Checker=0
+IfTrueAction=[!DisableMouseAction Shortcuts_Apps_Container "MouseScrollUpAction|MouseScrollDownAction"][!UpdateMeterGroup Background_1][!Redraw]
+IfFalseAction=[!ShowMeter BarScroll][!UpdateMeterGroup Background_1][!Redraw]
+IfConditionMode=1
+Group=Sh_Checker
+DynamicVariables=1
+
+[MouseBarScroll]
+Measure=Plugin
+Plugin=Mouse
+MouseMoveAction=[!SetVariable Scroll_2 "(Clamp(($MouseY$-#ScrollClickedPos#-40*#Scale#)/(#Skin.H#/2-40*#Scale#)*[Sh_Checker],[Sh_Checker],0))"][!UpdateMeter *][!Redraw]
+LeftMouseUpAction=[!SetOption BarScroll MeterStyle BarScroll:Idle][!SetOption BarScroll Fill "Stroke Color #FontColor#,100"][!CommandMeasure MouseBarScroll "Stop"][!DisableMeasure MouseBarScroll][!UpdateMeter BarScroll][!Redraw]
+RequireDragging=1
+RelativeToSkin=1
+DynamicVariables=1
+Disabled=1
+
+;============================================================================================================================;
+;                                                    MeterStyles                                                             ;
+;============================================================================================================================;
+[Image:B]
+W=(#ImageWidth#*#Scale#)
+H=(#ImageHeight#*#Scale#)
+Y=r
+X=(80*#Scale#)r
+MouseOverAction=[!ShowMeter Hover:B][!SetVariable HoverIndex:B #CURRENTSECTION#][!UpdateMeter Hover:B][!Redraw]
+MouseLeaveAction=[!HideMeter Hover:B][!Redraw]
+DynamicVariables=1
+Container=Shortcuts_Apps_Container
+;============================================================================================================================;
+;                                                    Content                                                                 ;
+;============================================================================================================================;
+
+[Shortcuts_Apps_Container]
+Meter=Shape 
+X=(365*#Scale#)
+Y=(100*#Scale#)
+Shape=Rectangle 0,0,(#Shortcuts_Apps.W#*#Scale#),(#Shortcuts_Apps.H#*#Scale#),8 | StrokeWidth 0 
+DynamicVariables=1
+Group=Background_1 | Scrollbar
+MouseCursorAction=0
+MouseScrollDownAction=[!SetVariable Scroll "(Clamp(#Scroll_2#-50,[Sh_Checker],0))"][!UpdateMeter *][!Redraw]
+MouseScrollUpAction=[!SetVariable Scroll "(Clamp(#Scroll_2#+50,[Sh_Checker],0))"][!UpdateMeter *][!Redraw]
+
+[Hover:B]
+Meter=Shape
+Shape= Rectangle 0,0,(#HoverW:B#*#Scale#),(#HoverH:B#*#Scale#),(8*#Scale#) | StrokeWidth 0 | Fill Color 255,255,255,20
+Y=([#HoverIndex:B#:Y]-5*#Scale#)
+X=([#HoverIndex:B#:X]-5*#Scale#)
+DynamicVariables=1
+Hidden=1
+
+[BarScroll:Scrolling]
+Fill=Stroke Color #FontColor#
+[BarScroll:Idle]
+LeftMouseDownAction=[!SetVariable ScrollClickedPos "$MouseY$"][!SetOption BarScroll MeterStyle BarScroll:Scrolling][!EnableMeasure MouseBarScroll][!UpdateMeasure MouseBarScroll][!CommandMeasure MouseBarScroll "Start"]
+MouseOverAction=[!SetOption #CURRENTSECTION# Fill "Stroke Color #FontColor#,100"][!UpdateMeter #CURRENTSECTION#][!Redraw]
+MouseLeaveAction=[!SetOption #CURRENTSECTION# Fill "Stroke Color #FontColor#"][!UpdateMeter #CURRENTSECTION#][!Redraw]
+[BarScroll]
+Meter=Shape
+X=([Shortcuts_Apps_Container:XW]-5*#Scale#)
+Y=(80*#Scale#+(#Scroll_2#/([Sh_Checker]+1)*([Shortcuts_Apps_Container:H]-([Shortcuts_Apps_Container:H]/([Shortcuts_Apps_Container:H]-[Sh_Checker])*[Shortcuts_Apps_Container:H]))))
+Shape=Line 0,0,0,([Shortcuts_Apps_Container:H]/([Shortcuts_Apps_Container:H]-[Sh_Checker])*[Shortcuts_Apps_Container:H]) | StrokeWidth (4*#Scale#) | StrokeStartCap Round | StrokeEndCap Round | Extend Fill
+Fill=Stroke Color #FontColor#
+DynamicVariables=1
+Group=Background_1 | BarScroll
+Hidden=1
+MeterStyle=BarScroll:Idle
+
+
+@includeShortcuts=#@#Shortcuts\Shortcuts.nek
+
+
+
+
+[Shortcut.XYZ]
+Meter=Image

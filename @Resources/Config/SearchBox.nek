@@ -1,0 +1,30 @@
+[Type_BackGround]
+Meter=Shape
+X=(80*#Scale#)
+Y=(630*#Scale#)
+Shape=Rectangle 0,0, (#All_Apps.W#*#Scale#),(55*#Scale#),8 | StrokeWidth 0 | FillColor #BackGround_Color#,40
+DynamicVariables=1
+LeftMouseUpAction=[!CommandMeasure Function "search_Start"]
+[Icon_Search]
+Meter=String
+Text=[\xf002]
+X=(25*#Scale#)r
+Y=((55*#Scale#)/2)r
+FontFace=Font Awesome 6 Pro
+FontColor=#FontColor#
+FontWeight=500
+FontSize=(22*#Scale#)
+StringAlign=CenterCenter
+AntiAlias=1
+
+[Type_String]
+Meter=String
+Text=Type here to search
+X=(35*#Scale#)r
+Y=(-10*#Scale#)r
+FontColor=#FontColor#
+FontFace=#FontFace#
+FontWeight=400
+AntiAlias=1
+FontSize=(15*#Scale#)
+DynamicVariables=1
