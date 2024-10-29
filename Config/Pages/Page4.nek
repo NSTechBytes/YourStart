@@ -1,0 +1,232 @@
+
+;============================================================================================================================;
+;                                                    Content                                                                 ;
+;============================================================================================================================;
+
+[Header_Main_String]
+Meter=String
+Text=Position
+MeterStyle=Header_Style_Text
+
+[Choose]
+Meter=String
+Text=Choose StartMEnu Position
+Y=150
+MeterStyle=Left_String
+
+
+[Export:M]
+Measure=String
+OnUpdateAction=[!SetOption #Position# MeterStyle "CurrentAlign:S"][!UpdateMeter #Position#][!Redraw]
+
+[Align:S]
+X=(((200-40)/3+10)*0.50)r
+Y=r
+OverColor=100,100,100,200
+LeaveColor=100,100,100,100
+DynamicVariables=1
+Shape=Rectangle 0,0,((200-40)/3),((200-40)/3),3,3 | StrokeWidth 0 | Extend Fill | Scale 0.50,0.50,0,0
+Fill=Fill Color 255,255,255
+MouseOverAction=[!SetOption #CURRENTSECTION# Fill "Fill Color 200,200,200"][!UpdateMeter #CURRENTSECTION#][!Redraw]
+MouseLeaveAction=[!SetOption #CURRENTSECTION# Fill "Fill Color 255,255,255][!UpdateMeter #CURRENTSECTION#][!Redraw]
+Triangle=(26.5*0.50),(20*0.50) | LineTo (16.5*0.50),(40*0.50) | LineTo (36.5*0.50),(40*0.50) | ClosePath 1
+LeftMouseUpAction=[!WriteKeyvalue Variables Position #CURRENTSECTION# "#@#Vars.nek"][!RainmeterRefreshApp]
+DirFill=Fill Color 100,100,100,200 | StrokeWidth 0
+[CurrentAlign:S]
+X=(((200-40)/3+10)*0.50)r
+Y=r
+DynamicVariables=1
+Shape=Rectangle 0,0,((200-40)/3),((200-40)/3),3,3 | StrokeWidth 0 | Extend Fill | Scale 0.50,0.50,0,0
+Fill=Fill Color 100,100,100,200
+Triangle=(26.5*0.50),(20*0.50) | LineTo (16.5*0.50),(40*0.50) | LineTo (36.5*0.50),(40*0.50) | ClosePath 1
+DirFill=Fill Color 12,12,12 | StrokeWidth 2 | Stroke Color #set.Accent_Color# | StrokeStartCap Round | StrokeEndCap Round
+
+;============================================================================================================================;
+;                                                   BoX                                                                      ;
+;============================================================================================================================;
+
+[AlignBox]
+Meter=Shape
+X=190
+Y=(40/2)R
+DynamicVariables=1
+Shape=Rectangle 0,0,200,200,3,3 | StrokeWidth 2 | Fill Color 0,0,0,1 | Extend Fill | Scale 0.50,0.50,0,0
+Fill=Stroke Color 10,10,10,50
+MouseOverAction=[!SetOption #CURRENTSECTION# Fill "Stroke Color 10,10,10,150"][!UpdateMeter #CURRENTSECTION#][!Redraw]
+MouseLeaveAction=[!SetOption #CURRENTSECTION# Fill "Stroke Color 10,10,10,50"][!UpdateMeter #CURRENTSECTION#][!Redraw]
+[TL]
+Meter=Shape
+X=(10*0.50)r
+Y=(10*0.50)r
+Shape2=Path Triangle | Extend DirFill | OffSet 0,(-2.5*0.50) | Rotate 315
+MeterStyle=Align:S
+[TC]
+Meter=Shape
+Shape2=Path Triangle | Extend DirFill | OffSet 0,(-2.5*0.50) | Rotate 0
+MeterStyle=Align:S
+LeftMouseUpAction=[!WriteKeyvalue Variables Position #CURRENTSECTION# "#@#Vars.nek"][!RainmeterRefreshApp]
+[TR]
+Meter=Shape
+Shape2=Path Triangle | Extend DirFill | OffSet 0,(-2.5*0.50) | Rotate 45
+MeterStyle=Align:S
+[CL]
+Meter=Shape
+X=((-(200-40)/3*2-20)*0.50)r
+Y=(((200-40)/3+10)*0.50)r
+Shape2=Path Triangle | Extend DirFill | OffSet 0,(-2.5*0.50) | Rotate 270
+MeterStyle=Align:S
+LeftMouseUpAction=[!WriteKeyvalue Variables Position #CURRENTSECTION# "#@#Vars.nek"][!RainmeterRefreshApp]
+[CC]
+Meter=Shape
+Shape2=Ellipse ((200-40)/3/2*0.50),((200-40)/3/2*0.50),(10*0.50) | Extend DirFill
+MeterStyle=Align:S
+[CR]
+Meter=Shape
+Shape2=Path Triangle | Extend DirFill  | OffSet 0,(-2.5*0.50) | Rotate 90
+MeterStyle=Align:S
+LeftMouseUpAction=[!WriteKeyvalue Variables Position #CURRENTSECTION# "#@#Vars.nek"][!RainmeterRefreshApp]
+[BL]
+Meter=Shape
+X=((-(200-40)/3*2-20)*0.50)r
+Y=(((200-40)/3+10)*0.50)r
+Shape2=Path Triangle | Extend DirFill | OffSet 0,(-2.5*0.50) | Rotate 225
+MeterStyle=Align:S
+[BC]
+Meter=Shape
+Shape2=Path Triangle | Extend DirFill | OffSet 0,(-2.5*0.50) | Rotate 180
+MeterStyle=Align:S
+LeftMouseUpAction=[!WriteKeyvalue Variables Position #CURRENTSECTION# "#@#Vars.nek"][!RainmeterRefreshApp]
+[BR]
+Meter=Shape
+Shape2=Path Triangle | Extend DirFill | OffSet 0,(-2.5*0.50) | Rotate 135
+MeterStyle=Align:S
+
+;============================================================================================================================;
+;                                               Input                                                                        ;
+;============================================================================================================================;
+
+[XPad]
+Meter=String
+Text=X-Pad
+Y=350
+MeterStyle=Left_String
+[X-pad_Shape]
+Meter=Shape
+X=465
+Y=-8r
+Shape=Rectangle 0,0,100,40,8 |StrokeWidth 0 | Extend This
+This= Fillcolor 17,24,39,100
+DynamicVariables=1
+LeftMouseUpAction=[!PluginBang "MeterInput ExecuteBatch 1"]
+MouseOverAction=[!SetOption #CURRENTSECTION# This "FillColor 17,24,39,50"][!UpdateMeter *][!Redraw]
+MouseLeaveAction=[!SetOption #CURRENTSECTION# This "FillColor 17,24,39,100"][!UpdateMeter *][!Redraw]
+[X-pad_Text]
+Meter=String
+Text=#Xpad#
+MeterStyle=Box_Text
+[Div_1]
+Meter=Shape
+MeterStyle=Divider
+
+[YPad]
+Meter=String
+Text=Y-Pad
+MeterStyle=Left_String
+[Y-pad_Shape]
+Meter=Shape
+X=465
+Y=-8r
+Shape=Rectangle 0,0,100,40,8 |StrokeWidth 0 | Extend This
+This= Fillcolor 17,24,39,100
+DynamicVariables=1
+LeftMouseUpAction=[!PluginBang "MeterInput2 ExecuteBatch 1"]
+MouseOverAction=[!SetOption #CURRENTSECTION# This "FillColor 17,24,39,50"][!UpdateMeter *][!Redraw]
+MouseLeaveAction=[!SetOption #CURRENTSECTION# This "FillColor 17,24,39,100"][!UpdateMeter *][!Redraw]
+[Y-pad_Text]
+Meter=String
+Text=#Ypad#
+MeterStyle=Box_Text
+[Div_2]
+Meter=Shape
+MeterStyle=Divider
+
+
+[TaskBar Space]
+Meter=String
+Text=Space From TaskBar 
+MeterStyle=Left_String
+[TaskBar Space_Shape]
+Meter=Shape
+X=465
+Y=-8r
+Shape=Rectangle 0,0,100,40,8 |StrokeWidth 0 | Extend This
+This= Fillcolor 17,24,39,100
+DynamicVariables=1
+LeftMouseUpAction=[!PluginBang "MeterInput3 ExecuteBatch 1"]
+MouseOverAction=[!SetOption #CURRENTSECTION# This "FillColor 17,24,39,50"][!UpdateMeter *][!Redraw]
+MouseLeaveAction=[!SetOption #CURRENTSECTION# This "FillColor 17,24,39,100"][!UpdateMeter *][!Redraw]
+[TaskBar Space_Text]
+Meter=String
+Text=#PreserveTaskbarSpace#
+MeterStyle=Box_Text
+
+;========================================================================================================================================================;
+;                                                                        Measures                                                                        ;
+;========================================================================================================================================================;
+
+[MeterInput]
+Measure=Plugin
+Plugin=InputText.dll
+StringAlign=Center
+FontFace=Ubuntu
+FontSize=15
+X=465
+Y=342
+W=100
+H=40
+AntiAlias=1
+FocusDismiss=1
+SolidColor=17,24,39
+FontColor=255,255,255
+Command1=[!WriteKeyValue Variables XPad "$UserInput$""#@#Vars.nek"][!RainmeterRefreshApp]
+DefaultValue="#XPad#"
+DynamicVariables=1
+
+
+
+[MeterInput2]
+Measure=Plugin
+Plugin=InputText.dll
+StringAlign=Center
+FontFace=Ubuntu
+FontSize=15
+X=465
+Y=415
+W=100
+H=40
+AntiAlias=1
+FocusDismiss=1
+SolidColor=17,24,39
+FontColor=255,255,255
+Command1=[!WriteKeyValue Variables YPad "$UserInput$""#@#Vars.nek"][!RainmeterRefreshApp]
+DefaultValue="#YPad#"
+DynamicVariables=1
+
+
+[MeterInput3]
+Measure=Plugin
+Plugin=InputText.dll
+StringAlign=Center
+FontFace=Ubuntu
+FontSize=15
+X=465
+Y=488
+W=100
+H=40
+AntiAlias=1
+FocusDismiss=1
+SolidColor=17,24,39
+FontColor=255,255,255
+Command1=[!WriteKeyValue Variables PreserveTaskbarSpace "$UserInput$""#@#Vars.nek"][!RainmeterRefreshApp]
+DefaultValue="#PreserveTaskbarSpace#"
+DynamicVariables=1

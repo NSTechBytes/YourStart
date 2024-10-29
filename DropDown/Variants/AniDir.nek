@@ -1,0 +1,28 @@
+[Bottom_Shape]
+Meter=Shape
+Y=10r 
+MeterStyle=Content_Shape_S
+[Bottom]
+Meter=String 
+MeterStyle=Content_Text | Content_Text_1
+
+[Top_Shape]
+Meter=Shape 
+MeterStyle=Content_Shape_S
+[Top]
+Meter=String 
+MeterStyle=Content_Text |Content_Text_1
+
+[Right_Shape]
+Meter=Shape 
+MeterStyle=Content_Shape_S
+[Right]
+Meter=String 
+MeterStyle=Content_Text | Content_Text_1
+
+[Left_Shape]
+Meter=Shape 
+MeterStyle=Content_Shape_S
+[Left]
+Meter=String 
+MeterStyle=Content_Text | Content_Text_1

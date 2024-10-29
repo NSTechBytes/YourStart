@@ -1,0 +1,102 @@
+[Function]
+Measure=Script
+ScriptFile=#@#Scripts\Lua\Config.lua
+DynamicVariables=1
+Update=-1
+
+
+;============================================================================================================================;
+;                                                    Content                                                                 ;
+;============================================================================================================================;
+
+[Header_Main_String]
+Meter=String
+Text=Animation
+MeterStyle=Header_Style_Text
+
+
+[AnimationEase_String]
+Meter=String
+Text=Animation Ease Type
+Y=150
+MeterStyle=Left_String
+[Animation_Input_Shape]
+Meter=Shape
+X=415
+Y=145
+Shape=Rectangle 0,0,150,40,8 |StrokeWidth 0 | Extend This 
+This=Fillcolor 17,24,39,100
+DynamicVariables=1
+MouseOverAction=[!SetOption #CURRENTSECTION# This "FillColor 17,24,39,50"][!UpdateMeter *][!Redraw]
+MouseLeaveAction=[!SetOption #CURRENTSECTION# This "FillColor 17,24,39,100"][!UpdateMeter *][!Redraw]
+LeftMouseUpAction=[!CommandMeasure Function "DropDown('EaseType', 'Animation_Input_Shape', 1,1)"]
+[Animation_Text_1]
+Meter=String
+Text=#EaseType#
+X=(150/2)r
+MeterStyle=Box_Text
+[Div_1]
+Meter=Shape
+MeterStyle=Divider
+
+[AnimationDirection_String]
+Meter=String
+Text=Animation Direction
+MeterStyle=Left_String
+[AnimationDirection_Input_Shape]
+Meter=Shape
+X=415
+Y=215
+Shape=Rectangle 0,0,150,40,8 |StrokeWidth 0 | Extend This 
+This=Fillcolor 17,24,39,100
+DynamicVariables=1
+MouseOverAction=[!SetOption #CURRENTSECTION# This "FillColor 17,24,39,50"][!UpdateMeter *][!Redraw]
+MouseLeaveAction=[!SetOption #CURRENTSECTION# This "FillColor 17,24,39,100"][!UpdateMeter *][!Redraw]
+LeftMouseUpAction=[!CommandMeasure Function "DropDown('AniDir', 'AnimationDirection_Input_Shape', 1,1)"]
+[AnimationDirection_Text_1]
+Meter=String
+Text=#AniDir#
+X=(150/2)r
+MeterStyle=Box_Text
+[Div_2]
+Meter=Shape
+MeterStyle=Divider
+
+
+[AnimationSteps_String]
+Meter=String
+Text=Animation Steps
+MeterStyle=Left_String
+[AnimationSteps_Shape]
+Meter=Shape
+X=465
+Y=-8r
+Shape=Rectangle 0,0,100,40,8 |StrokeWidth 0 | Extend This
+This= Fillcolor 17,24,39,100
+DynamicVariables=1
+LeftMouseUpAction=[!PluginBang "MeterInput ExecuteBatch 1"]
+MouseOverAction=[!SetOption #CURRENTSECTION# This "FillColor 17,24,39,50"][!UpdateMeter *][!Redraw]
+MouseLeaveAction=[!SetOption #CURRENTSECTION# This "FillColor 17,24,39,100"][!UpdateMeter *][!Redraw]
+[AniDirSteps_Text]
+Meter=String
+Text=#AniSteps#
+MeterStyle=Box_Text
+
+
+[MeterInput]
+Measure=Plugin
+Plugin=InputText.dll
+StringAlign=Center
+FontFace=Ubuntu
+FontSize=15
+X=465
+Y=288
+W=100
+H=40
+AntiAlias=1
+FocusDismiss=1
+SolidColor=17,24,39
+FontColor=255,255,255
+Command1=[!WriteKeyValue Variables AniSteps "$UserInput$""#@#Vars.nek"][!RainmeterRefreshApp]
+DefaultValue="#AniSteps#"
+DynamicVariables=1

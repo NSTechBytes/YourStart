@@ -1,0 +1,307 @@
+;============================================================================================================================;
+;                                                     Function       s                                                       ;
+;============================================================================================================================;
+
+[MeasureName]
+Measure=Plugin
+Plugin=ConfigActive
+ConfigName=YourStart\Update
+IfCondition=[&MeasureName:IsActive(YourStart\Update)] = 1
+IfTrueAction=[!HideMeter Toggle_on_Image1][!UpdateMeter *][!Redraw]
+DynamicVariables=1
+
+[m.ConfigActive]
+Measure=Plugin
+Plugin=ConfigActive
+ConfigName=YourStart\HotKey
+IfCondition=m.ConfigActive=1
+IfTrueAction=[!ShowMeter HotKey_off_Image][!UpdateMeter *][!Redraw]
+IfFalseAction=[!ShowMeter HotKey_on_Image1][!UpdateMeter *][!Redraw]
+
+;============================================================================================================================;
+;                                                     Header                                                                 ;
+;============================================================================================================================;
+
+[General_String]
+Meter=String
+Text=General
+MeterStyle=Header_Style_Text
+
+[Location_Image_]
+Meter=Image
+ImageName=#@#Images\Config\Location.png
+W=50
+H=50
+X=520
+Y=45
+LeftMouseUpAction=["https://www.latlong.net/"]
+ToolTipText=Click Here to find your Longitude and Latitude.
+UpdateDivider=-1
+
+[Box_Image_]
+Meter=Image
+ImageName=#@#Images\Config\Box.png
+W=50
+H=50
+X=450
+Y=45
+LeftMouseUpAction=[!ActivateConfig "YourStart\SetupBlock"]
+ToolTipText=Manage the Box position.
+UpdateDivider=-1
+;============================================================================================================================;
+;                                                     Scale                                                                  ;
+;============================================================================================================================;
+
+[Scale_String]
+Meter=String
+Text=Skin Scale
+Y=150
+MeterStyle=Left_String
+
+[Skin_Input_Shape]
+Meter=Shape
+X=460
+Y=145
+Shape=Rectangle 0,0,100,40,8 |StrokeWidth 0 | Extend This 
+This=Fillcolor 17,24,39,100
+DynamicVariables=1
+LeftMouseUpAction=[!PluginBang "MeterInput ExecuteBatch 1"]
+MouseOverAction=[!SetOption #CURRENTSECTION# This "FillColor 17,24,39,50"][!UpdateMeter *][!Redraw]
+MouseLeaveAction=[!SetOption #CURRENTSECTION# This "FillColor 17,24,39,100"][!UpdateMeter *][!Redraw]
+
+[Skin_Scale_Text]
+Meter=String
+Text=#Scale#
+MeterStyle=Box_Text
+
+[Div_1]
+Meter=Shape
+MeterStyle=Divider
+
+;============================================================================================================================;
+;                                                     Update                                                                 ;
+;============================================================================================================================;
+
+[Check_Update_String]
+Meter=String
+Text=Check Skin Update#CRLF#in BackGround
+MeterStyle=Left_String
+
+[Toggle_off_Image]
+Meter=Image
+ImageName=#@#Images\Config\on.png
+W=40
+H=40
+X=520
+Y=220
+LeftMouseUpAction=[!DeactivateConfig "YourStart\Update"][!Refresh]
+
+[Toggle_on_Image1]
+Meter=Image
+ImageName=#@#Images\Config\off.png
+W=40
+H=40
+X=520
+Y=220
+LeftMouseUpAction=[!ActivateConfig "YourStart\Update"][!Refresh]
+
+[Div_2]
+Meter=Shape
+Y=290
+MeterStyle=Divider
+
+;============================================================================================================================;
+;                                                    HotKey                                                                  ;
+;============================================================================================================================;
+
+[HotKey_String]
+Meter=String
+Text=Use Hotkey for toogle
+MeterStyle=Left_String
+
+[HotKey_off_Image]
+Meter=Image
+ImageName=#@#Images\Config\on.png
+W=40
+H=40
+X=520
+Y=300
+LeftMouseUpAction=[!DeactivateConfig "YourStart\HotKey"][!Refresh]
+Hidden=1
+
+[HotKey_on_Image1]
+Meter=Image
+ImageName=#@#Images\Config\off.png
+W=40
+H=40
+X=520
+Y=300
+LeftMouseUpAction=[!ActivateConfig "YourStart\HotKey"][!Refresh]
+Hidden=1
+
+
+[HotKey_Input_Shape]
+Meter=Shape
+X=410
+Y=350
+Shape=Rectangle 0,0,150,40,8 |StrokeWidth 0 | Extend This 
+This=Fillcolor 17,24,39,100
+DynamicVariables=1
+MouseOverAction=[!SetOption #CURRENTSECTION# This "FillColor 17,24,39,50"][!UpdateMeter *][!Redraw]
+MouseLeaveAction=[!SetOption #CURRENTSECTION# This "FillColor 17,24,39,100"][!UpdateMeter *][!Redraw]
+LeftMouseUpAction=["#@#Addons\RainHotKey.exe" -FileName "#@#HotKey.nek"  -VarName "HotKey" -RainmeterPath "#PROGRAMPATH#Rainmeter.exe" -RefreshConfig "*"]
+[HotKEy_Scale_Text]
+Meter=String
+X=(150/2)r
+Text=#HotKey#
+MeterStyle=Box_Text
+
+[Div_3]
+Meter=Shape
+MeterStyle=Divider
+;============================================================================================================================;
+;                                                     Longitude                                                              ;
+;============================================================================================================================;
+
+[Logitude_String]
+Meter=String
+Text=Longitude
+MeterStyle=Left_String
+
+[Longitude_Input_Shape]
+Meter=Shape
+X=360
+Y=-3r
+Shape=Rectangle 0,0,200,40,8 |StrokeWidth 0 | Extend This 
+This=Fillcolor 17,24,39,100
+DynamicVariables=1
+LeftMouseUpAction=[!PluginBang "MeterInput2 ExecuteBatch 1"]
+MouseOverAction=[!SetOption #CURRENTSECTION# This "FillColor 17,24,39,50"][!UpdateMeter *][!Redraw]
+MouseLeaveAction=[!SetOption #CURRENTSECTION# This "FillColor 17,24,39,100"][!UpdateMeter *][!Redraw]
+
+[Logitude_Text]
+Meter=String
+Text=#Longitude#
+W=200
+X=(200/2)r
+MeterStyle=Box_Text
+
+[Div_4]
+Meter=Shape
+MeterStyle=Divider
+
+;============================================================================================================================;
+;                                                     Longitude                                                              ;
+;============================================================================================================================;
+
+[Latitude_String]
+Meter=String
+Text=Latitude
+MeterStyle=Left_String
+
+[Latitude_Input_Shape]
+Meter=Shape
+X=360
+Y=-3r
+Shape=Rectangle 0,0,200,40,8 |StrokeWidth 0 | Extend This 
+This=Fillcolor 17,24,39,100
+DynamicVariables=1
+LeftMouseUpAction=[!PluginBang "MeterInput3 ExecuteBatch 1"]
+MouseOverAction=[!SetOption #CURRENTSECTION# This "FillColor 17,24,39,50"][!UpdateMeter *][!Redraw]
+MouseLeaveAction=[!SetOption #CURRENTSECTION# This "FillColor 17,24,39,100"][!UpdateMeter *][!Redraw]
+
+[Latitude_Text]
+Meter=String
+Text=#Latitude#
+W=200
+X=(200/2)r
+MeterStyle=Box_Text
+
+[Div_5]
+Meter=Shape
+MeterStyle=Divider
+
+;============================================================================================================================;
+;                                                     Update                                                                 ;
+;============================================================================================================================;
+
+[Celcius_String]
+Meter=String
+Text=Celcius
+MeterStyle=Left_String
+
+[Toggle_off_Image_C]
+Meter=Image
+ImageName=#@#Images\Config\on.png
+W=40
+H=40
+X=520
+Y=580
+LeftMouseUpAction=[!WriteKeyValue Variables WeatherFormat "F" "#@#Vars.nek"][!WriteKeyValue Variables Celcius "0" "#@#Vars.nek"][!RainmeterRefreshApp]
+
+[Toggle_on_Image1_C]
+Meter=Image
+ImageName=#@#Images\Config\off.png
+W=40
+H=40
+X=520
+Y=580
+LeftMouseUpAction=[!WriteKeyValue Variables WeatherFormat "C" "#@#Vars.nek"][!WriteKeyValue Variables Celcius "1" "#@#Vars.nek"][!RainmeterRefreshApp]
+Hidden=#Celcius#
+;============================================================================================================================;
+;                                                     Measure                                                                ;
+;============================================================================================================================;
+
+[MeterInput]
+Measure=Plugin
+Plugin=InputText.dll
+StringAlign=Center
+FontFace=Ubuntu
+FontSize=15
+X=460
+Y=145
+W=100
+H=40
+AntiAlias=1
+FocusDismiss=1
+SolidColor=17,24,39
+FontColor=255,255,255
+Command1=[!WriteKeyValue Variables Scale "$UserInput$""#@#Vars.nek"][!RainmeterRefreshApp]
+DefaultValue="#Scale#"
+DynamicVariables=1
+
+[MeterInput2]
+Measure=Plugin
+Plugin=InputText.dll
+StringAlign=Center
+FontFace=Ubuntu
+FontSize=15
+X=360
+Y=427
+W=200
+H=40
+AntiAlias=1
+FocusDismiss=1
+SolidColor=17,24,39
+FontColor=255,255,255
+Command1=[!WriteKeyValue Variables longitude "$UserInput$""#@#Vars.nek"][!RainmeterRefreshApp]
+DefaultValue="#longitude#"
+DynamicVariables=1
+
+[MeterInput3]
+Measure=Plugin
+Plugin=InputText.dll
+StringAlign=Center
+FontFace=Ubuntu
+FontSize=15
+X=360
+Y=505
+W=200
+H=40
+AntiAlias=1
+FocusDismiss=1
+SolidColor=17,24,39
+FontColor=255,255,255
+Command1=[!WriteKeyValue Variables latitude "$UserInput$""#@#Vars.nek"][!RainmeterRefreshApp]
+DefaultValue="#latitude#"
+DynamicVariables=1
