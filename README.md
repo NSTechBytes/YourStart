@@ -18,7 +18,7 @@ YourStart is a minimalistic Rainmeter skin designed to provide a sleek and funct
 
 1. Download the `.rmskin` file from the [releases](https://github.com/NSTechBytes/YourStart/releases) page.
 2. Double-click the `.rmskin` file to install.
-3. Use the Rainmeter manager to load the "Modern SearchBar" skin.
+3. Use the Rainmeter manager to load the "YourStart" skin.
 
 ## Preview
 ![Preview](https://github.com/NSTechBytes/Projects-Templates/blob/main/RainmeterSkins/YourStart/Screenshot%20(158).png) <!-- Add a link to your image or GIF preview -->
@@ -30,7 +30,7 @@ YourStart is a minimalistic Rainmeter skin designed to provide a sleek and funct
 - Windows 10/11 or later.
 - > 6GB RAM, > 4 Core CPU (Optional).
 - For older systems, **Powershell v5.1 or newer** is required. Upgrade powershell **[here](https://docs.microsoft.com/en-us/powershell/scripting/windows-powershell/install/installing-windows-powershell?view=powershell-7.2#upgrading-existing-windows-powershell)**!
-- Google Chrome (Recommended).
+
 
 - ## How to Contribute
 
